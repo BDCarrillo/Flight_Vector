@@ -213,6 +213,14 @@ namespace FlightVector
                         {
                             var symbolObj = new HudAPIv2.BillBoardHUDMessage(gravSymbol, new Vector2D(screenCoords.X, screenCoords.Y), s.colorGrav, Width: s.symbolWidth, Height: symbolHeight, TimeToLive: 2, HideHud: true, Shadowing: true, Rotation: 1.5708f);
                         }
+
+                        var inverseGravDir = gravDir;
+                        inverseGravDir.Multiply(-1f);
+                        var inverseGravScreenCoords = Vector3D.Transform(gridCtr + inverseGravDir * viewDist, viewProjectionMat);
+                        if (!(inverseGravScreenCoords.X > 1.1 || inverseGravScreenCoords.X < -1.1 || inverseGravScreenCoords.Y > 1.1 || inverseGravScreenCoords.Y < -1.1 || inverseGravScreenCoords.Z > 1))
+                        {
+                            var symbolObj = new HudAPIv2.BillBoardHUDMessage(gravSymbol, new Vector2D(inverseGravScreenCoords.X, inverseGravScreenCoords.Y), s.colorGravInverse, Width: s.symbolWidth, Height: symbolHeight, TimeToLive: 2, HideHud: true, Shadowing: true, Rotation: 1.5708f);
+                        }
                     }
                 }
                     

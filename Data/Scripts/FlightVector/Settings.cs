@@ -15,6 +15,7 @@ namespace FlightVector
             colorFwd = new Vector4(0, 0, 1, 0.5f),
             colorRev = new Vector4(1, 0, 0, 0.5f),
             colorGrav = new Vector4(0, 1, 0, 0.5f),
+            colorGravInverse = new Vector4(0.5f, 0, 1, 0.5f),
             enableLines = false,
             enableSymbols = true,
             lineLength = 80,
@@ -59,6 +60,8 @@ namespace FlightVector
         public float minVelocity { get; set; } = 0.1f;
         [ProtoMember(16)]
         public Vector2D stopTimeDrawCoords { get; set; } = new Vector2D(-0.71, -0.72);
+        [ProtoMember(17)]
+        public Vector4 colorGravInverse { get; set; } = new Vector4(1, 1, 0, 0.5f);
 
     }
     public partial class Session
@@ -99,6 +102,7 @@ namespace FlightVector
             s.colorFwd = new Vector4(MathHelper.Clamp(s.colorFwd.X, 0, 255), MathHelper.Clamp(s.colorFwd.Y, 0, 255), MathHelper.Clamp(s.colorFwd.Z, 0, 255), MathHelper.Clamp(s.colorFwd.W, 0, 255));
             s.colorRev = new Vector4(MathHelper.Clamp(s.colorRev.X, 0, 255), MathHelper.Clamp(s.colorRev.Y, 0, 255), MathHelper.Clamp(s.colorRev.Z, 0, 255), MathHelper.Clamp(s.colorRev.W, 0, 255));
             s.colorGrav = new Vector4(MathHelper.Clamp(s.colorGrav.X, 0, 255), MathHelper.Clamp(s.colorGrav.Y, 0, 255), MathHelper.Clamp(s.colorGrav.Z, 0, 255), MathHelper.Clamp(s.colorGrav.W, 0, 255));
+            s.colorGravInverse = new Vector4(MathHelper.Clamp(s.colorGravInverse.X, 0, 255), MathHelper.Clamp(s.colorGravInverse.Y, 0, 255), MathHelper.Clamp(s.colorGravInverse.Z, 0, 255), MathHelper.Clamp(s.colorGravInverse.W, 0, 255));
         }
         public static void Save(Settings settings)
         {

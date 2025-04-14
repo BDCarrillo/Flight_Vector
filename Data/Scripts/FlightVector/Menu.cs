@@ -8,7 +8,7 @@ namespace FlightVector
         HudAPIv2.MenuRootCategory SettingsMenu;
         HudAPIv2.MenuSubCategory SymbolSize, LineSize, StopTimeOptions, MoveStopDisplay;
 
-        HudAPIv2.MenuColorPickerInput ProgradeColor, RetrogradeColor, GravityColor;
+        HudAPIv2.MenuColorPickerInput ProgradeColor, RetrogradeColor, GravityColor, InverseGravityColor;
         HudAPIv2.MenuItem Blank, DecreaseSymSize, IncreaseSymSize, JetPackMode, ShowLines, ShowSymbols, IncLineLen, DecLineLen, IncLineThick, DecLineThick, ShowStop, MoveLeft, MoveRight, MoveUp, MoveDown;
         HudAPIv2.MenuTextInput MinVel;
 
@@ -19,6 +19,7 @@ namespace FlightVector
             ProgradeColor = new HudAPIv2.MenuColorPickerInput("Set prograde color >>", SettingsMenu, Settings.Instance.colorFwd, "Select color", ChangeProgradeColor);
             RetrogradeColor = new HudAPIv2.MenuColorPickerInput("Set retrograde color >>", SettingsMenu, Settings.Instance.colorRev, "Select color", ChangeRetrogradeColor);
             GravityColor = new HudAPIv2.MenuColorPickerInput("Set gravity color >>", SettingsMenu, Settings.Instance.colorGrav, "Select color", ChangeGravityColor);
+            InverseGravityColor = new HudAPIv2.MenuColorPickerInput("Set inverse gravity color >>", SettingsMenu, Settings.Instance.colorGravInverse, "Select color", ChangeInverseGravityColor);
             JetPackMode = new HudAPIv2.MenuItem("Enable for jetpack: " + Settings.Instance.jetpack, SettingsMenu, ChangeJetpack);
             MinVel = new HudAPIv2.MenuTextInput("Min velocity to draw lines/symbols " + Settings.Instance.minVelocity + "m/s", SettingsMenu, "Suppress showing lines/symbols if velocity is below this value", MinVelChange);
             Blank = new HudAPIv2.MenuItem("- - - - - - - - - - -", SettingsMenu, null);
@@ -58,6 +59,11 @@ namespace FlightVector
         {
             Settings.Instance.colorGrav = obj;
             GravityColor.InitialColor = obj;
+        }
+        private void ChangeInverseGravityColor(Color obj)
+        {
+            Settings.Instance.colorGravInverse = obj;
+            InverseGravityColor.InitialColor = obj;
         }
         private void ChangeJetpack()
         {

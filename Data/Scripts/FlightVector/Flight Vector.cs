@@ -1,14 +1,12 @@
 using Sandbox.ModAPI;
 using VRage.Game.Components;
 using VRageMath;
-using Sandbox.Game.Entities;
 using VRage.Game;
 using VRage.Utils;
 using System;
 using VRage.Game.ModAPI;
 using Draygo.API;
 using System.Text;
-using SeamlessClient.Messages;
 
 namespace FlightVector
 {
@@ -31,7 +29,6 @@ namespace FlightVector
         internal bool clientActionRegistered = false;
         internal HudAPIv2.HUDMessage stopInfo = null;
         internal string modName = "[Flight Vector]";
-        public static ushort SeamlessClientNetId = 2936;
 
         public override void BeforeStart()
         {
@@ -41,28 +38,24 @@ namespace FlightVector
                 InitConfig();
                 hudAPI = new HudAPIv2(InitMenu);
                 MyAPIGateway.Utilities.MessageEnteredSender += OnMessageEnteredSender;
-                //Seamless workaround
-                MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(SeamlessClientNetId, MessageHandler);
                 viewDist = (int)Math.Min(10000, Math.Min(Session.SessionSettings.SyncDistance, Session.SessionSettings.ViewDistance) * 0.95f);
             }
         }
 
-        private void MessageHandler(ushort packetID, byte[] data, ulong sender, bool fromServer)
+        private void SeamlessServerLoaded()
         {
-            if (!fromServer || sender == 0)
-                return;
-
-            ClientMessage msg = MyAPIGateway.Utilities.SerializeFromBinary<ClientMessage>(data);
-            if (msg == null)
-                return;
-
-            if(msg.MessageType == ClientMessageType.FirstJoin)
-            {
-                clientActionRegistered = false;
-                MyLog.Default.WriteLine(modName + " Seamless message - First Join");
-            }
+            clientActionRegistered = false;
         }
 
+        private void SeamlessServerUnloaded()
+        {
+            if (clientActionRegistered)
+            {
+                Session.Player.Controller.ControlledEntityChanged -= GridChange;
+                clientActionRegistered = false;
+                MyLog.Default.WriteLine(modName + " De-registered client GridChange action");
+            }
+        }
 
         private void OnMessageEnteredSender(ulong sender, string messageText, ref bool sendToOthers)
         {
@@ -252,7 +245,6 @@ namespace FlightVector
         {
             if (client)
             {
-                MyAPIGateway.Multiplayer.UnregisterSecureMessageHandler(SeamlessClientNetId, MessageHandler);
                 hudAPI?.Unload();
                 if (clientActionRegistered)
                 {

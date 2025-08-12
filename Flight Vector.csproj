@@ -145,7 +145,6 @@
     <None Include=".vs\VSWorkspaceState.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Scripts\FlightVector\Seamless.cs" />
     <Compile Include="Data\Scripts\FlightVector\HudAPIV2.cs" />
     <Compile Include="Data\Scripts\FlightVector\Menu.cs" />
     <Compile Include="Data\Scripts\FlightVector\Settings.cs" />
